@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { protect } from '../middleware/authMiddleware.js';  // Ensure the file extensions are correct
-import { createCar, getCars, getCarById, updateCar, deleteCar } from '../controllers/carController.js';  // Ensure the file extensions are correct
+import { createCar, getCars, getCarById, updateCar, deleteCar, gettCars } from '../controllers/carController.js';  // Ensure the file extensions are correct
 
 const router = express.Router();
 
@@ -33,5 +33,8 @@ router.put('/:id', protect, upload.array('images', 10), updateCar);
 
 // Delete a car
 router.delete('/:id', protect, deleteCar);
+
+//search a car
+router.get('/', protect, gettCars);
 
 export default router;  // Ensure the `default` export is used for ES Modules

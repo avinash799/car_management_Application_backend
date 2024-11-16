@@ -78,3 +78,29 @@ export const deleteCar = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+export const gettCars = async (req, res) => {
+    const { query } = req.query;
+
+    try {
+        let cars;
+        if (query) {
+            // Global search on title, description, and tags
+            cars = await Car.find({
+                $or: [
+                    { title: { $regex: query, $options: 'i' } },
+                    { description: { $regex: query, $options: 'i' } },
+                    { tags: { $in: [query] } },
+                ],
+            });
+        } else {
+            // Fetch all cars
+            cars = await Car.find();
+        }
+
+        res.json(cars);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error occurred while fetching cars.' });
+    }
+};
